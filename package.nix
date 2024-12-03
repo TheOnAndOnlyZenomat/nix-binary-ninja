@@ -68,7 +68,7 @@ stdenv.mkDerivation {
     (makeDesktopItem {
       name = "Binary Ninja";
       exec = "binaryninja";
-      icon = "logo";
+      icon = "binaryninja";
       desktopName = "Binary Ninja";
       comment = "Binary Ninja is an interactive decompiler, disassembler, debugger, and binary analysis platform built by reverse engineers, for reverse engineers";
       categories = [ "Development" ];
