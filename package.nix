@@ -4,6 +4,8 @@
   callPackage,
   autoPatchelfHook,
   makeWrapper,
+  makeDesktopItem,
+  copyDesktopItems,
   unzip,
   libGL,
   glib,
@@ -36,6 +38,7 @@ stdenv.mkDerivation {
     autoPatchelfHook
     python3.pkgs.wrapPython
     kdePackages.wrapQtAppsHook
+    copyDesktopItems
   ];
   buildInputs = [
     unzip
@@ -60,12 +63,26 @@ stdenv.mkDerivation {
     "wayland"
   ];
   buildPhase = ":";
+
+  desktopItems = [
+    (makeDesktopItem {
+      name = "Binary Ninja";
+      exec = "binaryninja";
+      icon = "logo";
+      desktopName = "Binary Ninja";
+      comment = "Binary Ninja is an interactive decompiler, disassembler, debugger, and binary analysis platform built by reverse engineers, for reverse engineers";
+      categories = [ "Development" ];
+    })
+  ];
+
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
     mkdir -p $out/opt
+    mkdir -p $out/share/pixmaps
     cp -r * $out/opt
+    cp $out/opt/docs/img/logo.png $out/share/pixmaps/
     chmod +x $out/opt/binaryninja
     buildPythonPath "$pythonDeps"
     makeWrapper $out/opt/binaryninja $out/bin/binaryninja \
